@@ -104,7 +104,7 @@
   {
     "id": 18,
     "question": "How many chapters are there in the C172 POH?",
-    "answer": "1-General 2-Limitations 3-Emergency Procedures 4-Normal Procedures 5-Performance 6-Weight and Balance (Equipment List) 7-Airplane Systems (Descriptions) 8-Airplane Handling (Service and Maintenance) 9-Supplements (Optional Systems Description and Operating Procedures)",
+    "answer": "1-General\n 2-Limitations\n 3-Emergency\n Procedures\n 4-Normal Procedures\n 5-Performance\n 6-Weight and Balance (Equipment List)\n 7-Airplane Systems (Descriptions)\n 8-Airplane Handling (Service and Maintenance)\n 9-Supplements (Optional Systems Description and Operating Procedures)",
     "category": "C172"
   },
   {
