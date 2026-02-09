@@ -6,29 +6,20 @@ import OneInOne from './displays/OneInOne';
 import type { Question } from './types';
 
 function App() {
-     useEffect(() => {
-        fetch('/questions.json')
+    const [mode, setMode] = useState('one-on-one')
+    const [questions, setQuestions] = useState<Question[]>([])
+
+    useEffect(() => {
+        fetch('./questions.json')
             .then(res => res.json())
             .then(data => {
                 setQuestions(data)
             })
     }, [])
 
-    const [mode, setMode] = useState('one-on-one')
-    const [question, setQuestion] = useState<Question>()
-    const [questions, setQuestions] = useState<Question[]>()
-
     function changeMode(newMode: string) {
         setMode(newMode)
     }
-
-    function nextQuestion() {
-    }
-
-    function backQuestion() {
-    }
-
-
 
     return (
         <>
@@ -54,8 +45,8 @@ function App() {
                     <div className='col-span-3 flex flex-col p-4 bg-blue-100 rounded-lg text-gray-700'>
                         {
                             mode === 'one-on-one' ?
-                            <OneInOne /> :
-                            <AllQuestions questions={questions as Question[]} />
+                            <OneInOne questions={questions} /> :
+                            <AllQuestions questions={questions} />
                         }
                     </div>
                 }
