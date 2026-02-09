@@ -24,7 +24,7 @@ function App() {
     return (
         <>
             <div className='grid grid-cols-4 gap-4 p-4'>
-                <div className='col-span-1 rounded-lg p-4 bg-blue-100 rounded-lg text-gray-700'>
+                <div className='col-span-1 rounded-lg p-4 bg-blue-100 text-gray-700'>
                     <h1 className='text-xl font-bold text-gray-700 mb-4'>
                         ATPL Questions
                     </h1>
