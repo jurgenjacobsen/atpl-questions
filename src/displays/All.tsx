@@ -1,24 +1,28 @@
 import type { Question } from "../types";
 
-export default function AllQuestions(questions: Question[]) {
+interface AllQuestionsProps {
+    questions: Question[];
+}
+
+export default function AllQuestions({ questions }: AllQuestionsProps) {
     if (!questions || questions.length === 0) {
         return <p>No questions available.</p>
     }
 
-    console.log(questions)
-
     return <>
-        <h1>
-            All Questions Available
+        <h1 className="text-2xl font-bold mb-4">
+            All Questions Available ({questions.length} total)
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)]">
             {
-                questions.map((q, index) => (
-                    <div key={index} className="p-4 bg-white rounded-lg shadow">
-                        <h2 className="text-lg font-bold mb-2">{q.question}</h2>
-                        <p className="text-gray-700 mb-2">Answer: {q.answer}</p>
-                        <p className="text-gray-500 text-sm">Category: {q.category}</p>
+                questions.map((q) => (
+                    <div key={q.id} className="p-4 bg-white rounded-lg shadow">
+                        <div className="flex items-start justify-between mb-2">
+                            <h2 className="text-lg font-bold flex-1">{q.question}</h2>
+                            <span className="ml-2 px-2 py-1 text-xs bg-blue-200 text-blue-800 rounded">{q.category}</span>
+                        </div>
+                        <p className="text-gray-700 mt-2"><strong>Answer:</strong> {q.answer}</p>
                     </div>
                 ))
             }
