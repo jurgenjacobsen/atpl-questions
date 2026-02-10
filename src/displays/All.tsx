@@ -14,7 +14,7 @@ export default function AllQuestions({ questions }: AllQuestionsProps) {
             All Questions Available ({questions.length} total)
         </h1>
 
-        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)]">
+        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)] rounded-lg">
             {
                 questions.map((q) => (
                     <div key={q.id} className="p-4 bg-white rounded-lg shadow">
