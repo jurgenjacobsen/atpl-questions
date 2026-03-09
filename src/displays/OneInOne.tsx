@@ -3,6 +3,7 @@ import type { Question } from '../types';
 
 interface OneInOneProps {
     questions: Question[];
+    initialQuestionId?: number;
 }
 
 // Helper function to load scores from localStorage
@@ -18,10 +19,14 @@ const loadScores = (): Record<number, number> => {
     return {};
 };
 
-export default function OneInOne({ questions }: OneInOneProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [showAnswer, setShowAnswer] = useState(false);
+export default function OneInOne({ questions, initialQuestionId }: OneInOneProps) {
+    // Track current question by ID so the index stays correct when the list changes
+    const [currentQuestionId, setCurrentQuestionId] = useState<number | undefined>(initialQuestionId);
+    // Track which question's answer is visible by ID so it auto-hides on navigation
+    const [showAnswerFor, setShowAnswerFor] = useState<number | undefined>(undefined);
     const [scores, setScores] = useState<Record<number, number>>(loadScores);
+    const [scoredInSession, setScoredInSession] = useState<Set<number>>(() => new Set());
+    const [shareTooltip, setShareTooltip] = useState(false);
 
     // Save scores to localStorage whenever they change
     useEffect(() => {
@@ -32,36 +37,59 @@ export default function OneInOne({ questions }: OneInOneProps) {
         return <p>No questions available.</p>;
     }
 
+    // Derive the index from the stored question ID; fall back to 0 if not found
+    const currentIndex = currentQuestionId !== undefined
+        ? Math.max(0, questions.findIndex(q => q.id === currentQuestionId))
+        : 0;
     const currentQuestion = questions[currentIndex];
+    const showAnswer = showAnswerFor === currentQuestion.id;
 
     const handleNext = () => {
         if (currentIndex < questions.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            setShowAnswer(false);
+            setCurrentQuestionId(questions[currentIndex + 1].id);
+            setShowAnswerFor(undefined);
         }
     };
 
     const handlePrevious = () => {
         if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            setShowAnswer(false);
+            setCurrentQuestionId(questions[currentIndex - 1].id);
+            setShowAnswerFor(undefined);
         }
     };
 
     const handleToggleAnswer = () => {
-        setShowAnswer(!showAnswer);
+        setShowAnswerFor(showAnswer ? undefined : currentQuestion.id);
     };
 
     const handleAddScore = () => {
         const questionId = currentQuestion.id;
+        if (scoredInSession.has(questionId)) return;
         setScores(prev => ({
             ...prev,
             [questionId]: (prev[questionId] || 0) + 1
         }));
+        setScoredInSession(prev => { const next = new Set(prev); next.add(questionId); return next; });
+    };
+
+    const handleShare = async () => {
+        const url = `${window.location.origin}${window.location.pathname}?q=${currentQuestion.id}`;
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: 'ATPL Question', url });
+            } else {
+                await navigator.clipboard.writeText(url);
+                setShareTooltip(true);
+                setTimeout(() => setShareTooltip(false), 2000);
+            }
+        } catch {
+            // ignore share/clipboard errors
+        }
     };
 
     const currentScore = scores[currentQuestion.id] || 0;
     const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+    const alreadyScoredInSession = scoredInSession.has(currentQuestion.id);
 
     return (
         <div className="flex flex-col h-full">
@@ -76,10 +104,24 @@ export default function OneInOne({ questions }: OneInOneProps) {
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6 mb-4 flex-1">
-                <div className="mb-4">
+                <div className="mb-4 flex justify-between items-center">
                     <span className="px-3 py-1 text-sm bg-blue-200 text-blue-800 rounded">
                         {currentQuestion.category}
                     </span>
+                    <div className="relative">
+                        <button
+                            onClick={handleShare}
+                            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-colors duration-300"
+                            title="Share this question"
+                        >
+                            🔗 Share
+                        </button>
+                        {shareTooltip && (
+                            <span className="absolute right-0 top-8 text-xs bg-gray-800 text-white px-2 py-1 rounded whitespace-nowrap">
+                                Link copied!
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <h2 className="text-xl font-semibold mb-4">{currentQuestion.question}</h2>
@@ -111,9 +153,11 @@ export default function OneInOne({ questions }: OneInOneProps) {
                 {showAnswer && (
                     <button
                         onClick={handleAddScore}
-                        className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-300"
+                        disabled={alreadyScoredInSession}
+                        className="px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
+                        title={alreadyScoredInSession ? 'Already scored in this session' : 'Add score'}
                     >
-                        + Add Score
+                        {alreadyScoredInSession ? '✓ Scored' : '+ Add Score'}
                     </button>
                 )}
 
