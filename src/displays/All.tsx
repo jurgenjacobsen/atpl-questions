@@ -31,7 +31,7 @@ function QuestionCard({ q }: { q: Question }) {
                     <div className="relative">
                         <button
                             onClick={handleShare}
-                            className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-colors duration-300"
+                            className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-colors duration-300 cursor-pointer"
                             title="Share this question"
                         >
                             🔗 Share

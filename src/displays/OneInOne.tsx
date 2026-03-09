@@ -111,7 +111,7 @@ export default function OneInOne({ questions, initialQuestionId }: OneInOneProps
                     <div className="relative">
                         <button
                             onClick={handleShare}
-                            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-colors duration-300"
+                            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-colors duration-300 cursor-pointer"
                             title="Share this question"
                         >
                             🔗 Share
@@ -138,14 +138,14 @@ export default function OneInOne({ questions, initialQuestionId }: OneInOneProps
                 <button
                     onClick={handlePrevious}
                     disabled={currentIndex === 0}
-                    className="px-4 py-2 bg-gray-400 hover:bg-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
+                    className="px-4 py-2 bg-gray-400 hover:bg-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300 cursor-pointer"
                 >
                     ← Previous
                 </button>
 
                 <button
                     onClick={handleToggleAnswer}
-                    className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-300"
+                    className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-300 cursor-pointer"
                 >
                     {showAnswer ? 'Hide Answer' : 'Show Answer'}
                 </button>
@@ -154,7 +154,7 @@ export default function OneInOne({ questions, initialQuestionId }: OneInOneProps
                     <button
                         onClick={handleAddScore}
                         disabled={alreadyScoredInSession}
-                        className="px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
+                        className="px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300 cursor-pointer"
                         title={alreadyScoredInSession ? 'Already scored in this session' : 'Add score'}
                     >
                         {alreadyScoredInSession ? '✓ Scored' : '+ Add Score'}
@@ -164,7 +164,7 @@ export default function OneInOne({ questions, initialQuestionId }: OneInOneProps
                 <button
                     onClick={handleNext}
                     disabled={currentIndex === questions.length - 1}
-                    className="px-4 py-2 bg-gray-400 hover:bg-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
+                    className="px-4 py-2 bg-gray-400 hover:bg-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300 cursor-pointer"
                 >
                     Next →
                 </button>
