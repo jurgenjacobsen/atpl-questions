@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Question } from "../types";
 
 interface AllQuestionsProps {
@@ -51,18 +51,79 @@ function QuestionCard({ q }: { q: Question }) {
 }
 
 export default function AllQuestions({ questions }: AllQuestionsProps) {
+    const [selectedSubject, setSelectedSubject] = useState("all");
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const subjectOptions = useMemo(() => {
+        return Array.from(new Set(questions.map((q) => q.category))).sort((a, b) =>
+            a.localeCompare(b)
+        );
+    }, [questions]);
+
+    const filteredQuestions = useMemo(() => {
+        const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+        return questions.filter((q) => {
+            const subjectMatches =
+                selectedSubject === "all" || q.category === selectedSubject;
+
+            if (!subjectMatches) {
+                return false;
+            }
+
+            if (!normalizedSearchTerm) {
+                return true;
+            }
+
+            return (
+                q.question.toLowerCase().includes(normalizedSearchTerm) ||
+                q.answer.toLowerCase().includes(normalizedSearchTerm) ||
+                q.category.toLowerCase().includes(normalizedSearchTerm)
+            );
+        });
+    }, [questions, selectedSubject, searchTerm]);
+
     if (!questions || questions.length === 0) {
         return <p>No questions available.</p>
     }
 
     return <>
         <h1 className="text-2xl font-bold mb-4">
-            All Questions Available ({questions.length} total)
+            All Questions Available ({filteredQuestions.length} shown / {questions.length} total)
         </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+            <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                Subject
+                <select
+                    value={selectedSubject}
+                    onChange={(e) => setSelectedSubject(e.target.value)}
+                    className="p-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    <option value="all">All subjects</option>
+                    {subjectOptions.map((subject) => (
+                        <option key={subject} value={subject}>
+                            {subject}
+                        </option>
+                    ))}
+                </select>
+            </label>
+
+            <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                Search
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search question, answer, or subject"
+                    className="p-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                />
+            </label>
+        </div>
 
         <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)] rounded-lg">
             {
-                questions.map((q) => (
+                filteredQuestions.map((q) => (
                     <QuestionCard key={q.id} q={q} />
                 ))
             }

@@ -27,7 +27,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        fetch('./questions.json')
+        const path = window.location.hostname === 'localhost' ? './atpl-questions/questions.json' : './questions.json';
+        fetch(path)
             .then(res => res.json())
             .then(data => {
                 // Shuffle questions on load so the order is different each session

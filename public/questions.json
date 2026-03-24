@@ -2154,18 +2154,6 @@
     "category": "INST"
   },
   {
-    "id": 360,
-    "question": "How do you calculate your TOD?",
-    "answer": "",
-    "category": ""
-  },
-  {
-    "id": 361,
-    "question": "How do you monitor your continuous descent?",
-    "answer": "",
-    "category": ""
-  },
-  {
     "id": 362,
     "question": "Describe the different types of pressure.",
     "answer": "Total pressure: is the pressure sensed in a closed tube that faces directly into the airflow. This is what de pitot tube senses Static pressure: is the pressure that acts in all direction. It is measure ate 90º to the airflow. This is what is sensed in the static port next to the pilot door. Dynamic pressure: is the speed, is the difference between the total pressure and the static pressure. Total pressure= Dynamic pressure + Static pressure",
