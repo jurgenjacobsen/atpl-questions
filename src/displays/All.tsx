@@ -121,7 +121,7 @@ export default function AllQuestions({ questions }: AllQuestionsProps) {
             </label>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)] rounded-lg">
+        <div className="grid grid-cols-1 gap-4 overflow-y-auto max-h-[calc(100vh-200px)] rounded-lg pr-4">
             {
                 filteredQuestions.map((q) => (
                     <QuestionCard key={q.id} q={q} />
