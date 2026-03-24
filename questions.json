@@ -2384,7 +2384,7 @@
   {
     "id": 398,
     "question": "What is the IDENT button?",
-    "answer": "The IDENT button is pressed whenever the radar controller requests the pilot to A special reply pulse is transmitted by the transponder to the interrogating ground station, which causes a special symbol to appear for a few Matilde Malheiro MMR 24011 Pedro Teixeira PDT 24011 Agosto 2025 seconds on the radar screen alongside the normal return from your aircraft, thus allowing positive identification by the radar controller.",
+    "answer": "The IDENT button is pressed whenever the radar controller requests the pilot to A special reply pulse is transmitted by the transponder to the interrogating ground station, which causes a special symbol to appear for a few seconds on the radar screen alongside the normal return from your aircraft, thus allowing positive identification by the radar controller.",
     "category": "INST"
   },
   {
